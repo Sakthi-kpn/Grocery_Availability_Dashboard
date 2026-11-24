@@ -112,6 +112,15 @@ for k, g in m.groupby('l3_name'):
     if len(gy) < 20: continue
     l3.append(dict(k=k, l1=g.l1_name.iloc[0], l2=g.l2_name.iloc[0], skus=int(g.ksin.nunique()), y=kpi(gy), m=kpi(g)))
 D['l3'] = l3
+# category tree: every L1, L1>L2 and L1>L2>L3 node with yesterday + MTD KPIs
+tree = []
+for keys, lvl in ((['l1_name'], 1), (['l1_name', 'l2_name'], 2), (['l1_name', 'l2_name', 'l3_name'], 3)):
+    for k, g in m.groupby(keys):
+        k = k if isinstance(k, tuple) else (k,)
+        gy = g[g.dt == Y]
+        if not len(gy): continue
+        tree.append(dict(lv=lvl, p=list(k), skus=int(g.ksin.nunique()), y=kpi(gy), m=kpi(g)))
+D['tree'] = tree
 D['com_listed'] = s[s.COM != 'Unmapped'].COM.value_counts().to_dict()
 D['hour_y'] = hr(yd); D['hour_m'] = hr(m)
 D['hour_cat_y'] = {c: hr(g) for c, g in yd.groupby('l1_name')}
@@ -132,7 +141,7 @@ else:
 sk = []
 for k, g in m.groupby('ksin'):
     gy = g[g.dt == Y]
-    sk.append(dict(n=g.kpn_title.iloc[0], c=g.l1_name.iloc[0], dl=g.l3_name.iloc[0], ya=av(gy) if len(gy) else None, ma=av(g),
+    sk.append(dict(n=g.kpn_title.iloc[0], c=g.l1_name.iloc[0], dl=g.l3_name.iloc[0], l2=g.l2_name.iloc[0], ya=av(gy) if len(gy) else None, ma=av(g),
                    yo=int(gy.oos0.sum()), ys=len(gy), mo=int(g.oos0.sum()), mr=len(g)))
 D['skus'] = sk
 D['dead'] = [z['n'] for z in sk if z['ma'] == 0]

@@ -148,6 +148,63 @@ body.ready .wrap{opacity:1;transform:none}
 @keyframes pulse{70%{box-shadow:0 0 0 8px rgba(12,163,12,0)}100%{box-shadow:0 0 0 0 rgba(12,163,12,0)}}
 .toast{position:fixed;right:24px;bottom:24px;z-index:150;background:#0a0907;border:1px solid rgba(201,169,110,.5);color:var(--gold-2);padding:12px 18px;border-radius:10px;font-size:13px;opacity:0;transform:translateY(10px);transition:all .5s;box-shadow:0 14px 40px rgba(0,0,0,.55)}
 .toast.show{opacity:1;transform:none}
+
+/* ---- grocery KPI band ---- */
+.gband{display:grid;grid-template-columns:1.1fr 1.5fr 1fr;gap:14px}
+.gband .card{padding:24px 26px}
+.glab{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3)}
+.ghero{display:grid;grid-template-columns:150px 1fr;gap:22px;align-items:center;background:linear-gradient(155deg,#2b2416 0%,#17150f 62%);border-color:rgba(201,169,110,.32)}
+.ring{position:relative;width:150px;height:150px}
+.ring svg{transform:rotate(-90deg)}
+.ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .num b{font:600 40px/1 var(--serif);color:var(--gold-2)}
+.ring .num b span{font-size:18px;color:var(--ink-2)}
+.ring .num small{font-size:10px;letter-spacing:.2em;color:var(--ink-3);margin-top:6px;text-transform:uppercase}
+.ghero .side .cmp{margin-top:10px;font-size:13px;color:var(--ink-2)}
+.ghero .side .spark{margin-top:14px}
+.ghero .side .spark text{fill:var(--ink-3);font:10px var(--sans)}
+.gcat .row{display:grid;grid-template-columns:86px 1fr 52px 54px;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line-2)}
+.gcat .row:last-child{border-bottom:0}
+.gcat .nm{font-size:13px;color:var(--ink);white-space:nowrap}
+.gcat .val{font:600 20px/1 var(--serif);text-align:right;font-variant-numeric:lining-nums}
+.gcat .dlt{font-size:11.5px;text-align:right;white-space:nowrap}
+.gcat .trk{height:6px;background:rgba(240,239,236,.06);border-radius:3px;position:relative}
+.gcat .trk i{position:absolute;left:0;top:0;bottom:0;border-radius:0 3px 3px 0}
+.gcat .trk u{position:absolute;top:-4px;width:2px;height:14px;background:var(--ink);border-radius:1px}
+.gcat .head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.gcat .head span{font-size:11px;color:var(--ink-3)}
+.gsig{display:flex;flex-direction:column;gap:0;padding:8px 26px!important}
+.gsig .it{padding:14px 0;border-bottom:1px solid var(--line-2)}
+.gsig .it:last-child{border-bottom:0}
+.gsig .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.gsig .big{font:600 30px/1 var(--serif);font-variant-numeric:lining-nums}
+.gsig .big span{font-size:15px;color:var(--ink-2);margin-left:3px}
+.gsig .cap{font-size:12px;color:var(--ink-2);margin-top:6px;line-height:1.45}
+.gsig .cap b{color:var(--ink);font-weight:600}
+@media(max-width:1200px){.gband{grid-template-columns:1fr 1fr}.gsig{grid-column:1/-1}}
+@media(max-width:760px){.gband{grid-template-columns:1fr}.ghero{grid-template-columns:1fr;justify-items:center;text-align:center}}
+
+/* ---- category explorer ---- */
+.cx{display:grid;grid-template-columns:1fr 1.15fr 1.35fr;gap:14px}
+.cxcol{padding:20px 20px 12px}
+.cxscroll{max-height:430px;overflow-y:auto;margin-right:-8px;padding-right:8px}
+.cxscroll::-webkit-scrollbar{width:6px}.cxscroll::-webkit-scrollbar-thumb{background:rgba(201,169,110,.25);border-radius:3px}
+.cxn{display:grid;grid-template-columns:1fr 50px 50px;grid-template-rows:auto auto;column-gap:10px;row-gap:6px;align-items:center;padding:11px 12px;margin:0 -12px;border-radius:10px;cursor:pointer;border:1px solid transparent;transition:background .15s,border-color .15s}
+.cxn:hover{background:rgba(201,169,110,.06)}
+.cxn.on{background:linear-gradient(90deg,rgba(201,169,110,.16),rgba(201,169,110,.03));border-color:rgba(201,169,110,.38)}
+.cxn .nm{font-size:13px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cxn .nm small{color:var(--ink-3);font-size:11px;margin-left:6px}
+.cxn .v{font:600 17px/1 var(--serif);text-align:right;font-variant-numeric:lining-nums}
+.cxn .d{font-size:11px;text-align:right;white-space:nowrap}
+.cxn .trk{grid-column:1/-1;height:5px;background:rgba(240,239,236,.06);border-radius:3px;position:relative}
+.cxn .trk i{position:absolute;left:0;top:0;bottom:0;border-radius:0 3px 3px 0}
+.cxn .trk u{position:absolute;top:-3px;width:2px;height:11px;background:var(--ink);border-radius:1px}
+.cxpath{font-size:12.5px;color:var(--ink-2)}
+.cxpath b{color:var(--gold-2);font-weight:600}
+.cxreset{background:none;border:1px solid var(--line);color:var(--ink-2);padding:6px 14px;border-radius:999px;font:12px var(--sans);cursor:pointer}
+.cxreset:hover{border-color:var(--gold);color:var(--gold-2)}
+.cxempty{font-size:12.5px;color:var(--ink-3);padding:14px 0}
+@media(max-width:1100px){.cx{grid-template-columns:1fr}.cxscroll{max-height:none}}
 </style>
 </head>
 <body>
@@ -170,7 +227,7 @@ body.ready .wrap{opacity:1;transform:none}
   <div class="seg" id="scope"><button data-s="y" class="on" id="sy">Yesterday</button><button data-s="m" id="sm">MTD</button></div>
 </header>
 
-<section><div class="kpis" id="kpis"></div></section>
+<section><div class="gband" id="kpis"></div></section>
 
 <section>
   <div class="sh"><h2>Key Insights<small>NETWORK · YESTERDAY &amp; MTD</small></h2></div>
@@ -191,6 +248,17 @@ body.ready .wrap{opacity:1;transform:none}
   <div class="sh"><h2>Breakup Analysis<small id="bklabel"></small></h2>
     <div class="legend" style="margin:0"><span><i style="background:var(--ink-2);height:8px;width:18px"></i>Selected period</span><span><i style="background:var(--ink);width:2px;height:12px"></i>Other period</span></div></div>
   <div class="g4" id="breakups"></div>
+</section>
+
+<section>
+  <div class="sh"><h2>Category Explorer<small id="cxlabel"></small></h2>
+    <div class="filters"><span class="cxpath" id="cxpath"></span><button class="cxreset" id="cxreset">Reset</button></div></div>
+  <div class="cx">
+    <div class="card cxcol"><div class="ct">L1 · Category</div><div id="cx1"></div></div>
+    <div class="card cxcol"><div class="ct" id="cx2t">L2 · Group</div><div id="cx2"></div></div>
+    <div class="card cxcol"><div class="ct" id="cx3t">L3 · Sub-category</div><div id="cx3" class="cxscroll"></div></div>
+  </div>
+  <div class="card" style="margin-top:14px"><div class="ct" id="cxst"></div><div class="cs" id="cxss"></div><div id="cxsku"></div></div>
 </section>
 
 <section>
@@ -217,10 +285,7 @@ body.ready .wrap{opacity:1;transform:none}
     <div class="card"><div class="ct">Zero all month</div><div class="cs"><span id="deadl">Dead SKUs · 0% every day this month</span></div><div id="dead"></div>
       <div class="note" id="gaps"></div></div>
   </div>
-  <div class="card" id="l3Card" style="margin-top:14px"><div class="ct" id="l3t"></div><div class="cs">Weakest sub-categories (L3)</div>
-    <div class="note" style="margin:-4px 0 10px">Sub-categories with at least 20 store-SKU lines, lowest availability first.</div>
-    <div id="l3"></div></div>
-</section>
+  </section>
 
 <footer><span>Availability = SKU-hours on shelf ÷ store hours (14 h, 7 AM–8 PM), weighted across all tracked store-SKU lines.</span><span id="foot"></span></footer>
 </div>
@@ -352,19 +417,44 @@ function fillFilters(){
 document.querySelectorAll('#scope button').forEach(b=>b.onclick=()=>{S=b.dataset.s;document.querySelectorAll('#scope button').forEach(x=>x.classList.toggle('on',x===b));render()});
 document.querySelectorAll('#view button').forEach(b=>b.onclick=()=>{VIEW=b.dataset.v;document.querySelectorAll('#view button').forEach(x=>x.classList.toggle('on',x===b));renderStores()});
 
-function render(){renderTrend();renderKPI();renderBreak();renderStores();renderSku()}
+function render(){renderTrend();renderKPI();renderExplorer();renderBreak();renderStores();renderSku()}
 function renderKPI(){
-  const k=ov[S],o=ov[S==='y'?'m':'y'],P=S==='y'?'MTD':'Yesterday';
-  const good=D.stores.filter(s=>s[S].avail>=85).length, crit=D.stores.filter(s=>s[S].avail<75).length;
-  const cmp=S==='y'?`vs MTD ${f1(ov.m.avail)}% &nbsp;${dl(ov.y.avail-ov.m.avail,' pts')}`:(D.recent?`Last 7d ${D.recent.avail}% vs earlier ${D.earlier.avail}% &nbsp;${dl(D.recent.avail-D.earlier.avail)}`:'');
-  const t=[
-   ['hero','Availability',`${f1(k.avail)}<span>%</span>`,cmp],
-   ['','Blank-all-day lines',`${IN(k.oos0)}`,`${k.oos0p}% of ${IN(k.rows)} lines · ${P} ${o.oos0p}%`],
-   ['','Full-day available',`${f1(k.full)}<span>%</span>`,`Lines on shelf all 14 h · ${P} ${o.full}%`],
-   ['','Lost SKU-hours',`${IN(k.lost)}`,S==='y'?`Daily avg MTD ${IN(Math.round(ov.m.lost/16))}`:`≈ ${IN(Math.round(k.lost/16))} per day`],
-   ['','Stores ≥ 85%',`${good}<span>/${D.stores_n}</span>`,`On-track stores · ${P} ${D.stores.filter(s=>s[S==='y'?'m':'y'].avail>=85).length}`],
-   ['','Stores &lt; 75%',`${crit}<span>/${D.stores_n}</span>`,`Critical stores · ${P} ${D.stores.filter(s=>s[S==='y'?'m':'y'].avail<75).length}`]];
-  $('#kpis').innerHTML=t.map(([c,l,v,s])=>`<div class="card kpi ${c}"><div class="l">${l}</div><div class="v">${v}</div><div class="c">${s}</div></div>`).join('');
+  const k=ov[S],O=S==='y'?'m':'y';
+  /* hero: ring + trend */
+  const R=62,C=2*Math.PI*R,frac=Math.max(0,Math.min(1,k.avail/100)),tk=ov[O].avail/100;
+  const cmp=S==='y'?`vs MTD ${f1(ov.m.avail)}% &nbsp;${dl(ov.y.avail-ov.m.avail,' pts')}`:(D.recent?`Last 7 days ${D.recent.avail}% vs earlier ${D.earlier.avail}% &nbsp;${dl(D.recent.avail-D.earlier.avail)}`:'');
+  const tv=D.trend.map(t=>t.v),W=230,H=54,mn=Math.min(...tv)-1,mx=Math.max(...tv)+1,x=i=>3+(W-6)*i/Math.max(1,tv.length-1),y=v=>4+(H-14)*(1-(v-mn)/(mx-mn));
+  const sp=tv.map((v,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join('');
+  const hits=tv.map((v,i)=>`<rect x="${x(i)-5}" y="0" width="10" height="${H}" fill="transparent" data-tip="<div class='h'>${D.trend[i].d} ${D.mon}</div><div class='r'>Availability<b>${f1(v)}%</b></div>"/>`).join('');
+  const ang=tk*360-90, tx=75+R*Math.cos(ang*Math.PI/180), ty=75+R*Math.sin(ang*Math.PI/180);
+  const hero=`<div class="card ghero">
+    <div class="ring"><svg viewBox="0 0 150 150" width="150" height="150"><defs><linearGradient id="rg" x1="0" x2="1"><stop offset="0" stop-color="#f3e2b8"/><stop offset="1" stop-color="#a8884f"/></linearGradient></defs>
+      <circle cx="75" cy="75" r="${R}" fill="none" stroke="rgba(240,239,236,.07)" stroke-width="9"/>
+      <circle cx="75" cy="75" r="${R}" fill="none" stroke="url(#rg)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${(C*frac).toFixed(1)} ${C.toFixed(1)}"/>
+      </svg>
+      <svg viewBox="0 0 150 150" width="150" height="150" style="position:absolute;inset:0"><circle cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" r="4" fill="var(--ink)" stroke="#17150f" stroke-width="2" data-tip="<div class='h'>${S==='y'?'MTD':'Yesterday'}</div><div class='r'>Availability<b>${f1(ov[O].avail)}%</b></div>"/></svg>
+      <div class="num"><b>${f1(k.avail)}<span>%</span></b><small>${S==='y'?D.dshort:'MTD'}</small></div></div>
+    <div class="side"><div class="glab">Overall availability</div><div class="cmp">${cmp}</div>
+      <div class="spark"><svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}"><path d="${sp}" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linejoin="round"/><circle cx="${x(tv.length-1)}" cy="${y(tv[tv.length-1])}" r="3.5" fill="var(--gold-2)"/>${hits}</svg>
+      <div class="glab" style="letter-spacing:.14em;margin-top:2px">Daily trend · ${D.trend[0].d}–${D.trend[D.trend.length-1].d} ${D.mon} · dot = ${S==='y'?'MTD':'yesterday'} on ring</div></div></div></div>`;
+  /* category scorecard */
+  const cats=CATS().map(c=>D.cat.find(x=>x.k===c)).filter(Boolean);
+  const sc=`<div class="card gcat"><div class="head"><div class="glab">Category scorecard</div><span>bar = ${S==='y'?'yesterday':'MTD'} · tick = ${S==='y'?'MTD':'yesterday'}</span></div>`+
+    cats.map(c=>`<div class="row" data-tip="<div class='h'>${c.k}</div><div class='r'>Yesterday<b>${c.y.avail}%</b></div><div class='r'>MTD<b>${c.m.avail}%</b></div><div class='r'>Blank all day<b>${c[S].oos0p}%</b></div><div class='r'>Store-SKU lines<b>${IN(c[S].rows)}</b></div>">
+      <span class="nm"><span class="dot" style="background:${CC[c.k]}"></span>${c.k}</span>
+      <div class="trk"><i style="width:${c[S].avail}%;background:${CC[c.k]}"></i><u style="left:calc(${c[O].avail}% - 1px)"></u></div>
+      <span class="val">${f1(c[S].avail)}</span><span class="dlt">${dl(c.y.avail-c.m.avail)}</span></div>`).join('')+`</div>`;
+  /* signals */
+  const dark=D.skus.filter(s=>!D.dead.includes(s.n)&&(S==='y'?s.ys>=5&&s.yo/s.ys>=.9:s.mr>=50&&s.mo/s.mr>=.9)).sort((a,b)=>S==='y'?b.ys-a.ys:b.mr-a.mr);
+  const so=[...D.stores].sort((a,b)=>b[S].avail-a[S].avail),hi=so[0],lo=so[so.length-1];
+  const sig=`<div class="card gsig">
+    <div class="it"><div class="top"><div class="glab">Dark network-wide</div><div class="big">${dark.length}<span>SKUs</span></div></div>
+      <div class="cap">Blank in 90%+ of their stores ${S==='y'?'yesterday':'this month'}${dark.length?`, e.g. <b>${dark[0].n}</b>`:''}. DC / vendor issue.</div></div>
+    <div class="it"><div class="top"><div class="glab">Dead all month</div><div class="big">${D.dead.length}<span>SKUs</span></div></div>
+      <div class="cap">0% every day since ${D.trend[0].d} ${D.mon}. Fixing them lifts MTD to <b>${D.exdead_m}%</b>.</div></div>
+    <div class="it"><div class="top"><div class="glab">Store spread</div><div class="big">${f1(hi[S].avail-lo[S].avail)}<span>pts</span></div></div>
+      <div class="cap"><b>${hi.name}</b> ${f1(hi[S].avail)}% → <b>${lo.name}</b> ${f1(lo[S].avail)}%</div></div></div>`;
+  $('#kpis').innerHTML=hero+sc+sig;
 }
 function renderBreak(){
   $('#bklabel').textContent=S==='y'?'BAR = YESTERDAY · TICK = MTD':'BAR = MTD · TICK = YESTERDAY';
@@ -409,12 +499,45 @@ function renderStores(){
     document.querySelectorAll('.tb th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;tSort={k,d:tSort.k===k?-tSort.d:1};renderStores()});
   }
 }
-function renderL3(){
-  const L=[...D.l3].sort((a,b)=>a[S].avail-b[S].avail).slice(0,15);
-  $('#l3t').textContent=`${S==='y'?'Yesterday':'MTD'} · ${D.l3.length} sub-categories tracked`;
-  $('#l3').innerHTML=`<table class="tb"><thead><tr><th>Sub-category</th><th>L2 group</th><th class="r">SKUs</th><th class="r">Yday %</th><th class="r">MTD %</th><th class="r">Δ</th><th class="r">Blank all day</th></tr></thead><tbody>`+
-   L.map(x=>`<tr><td><span class="dot" style="background:${CC[x.l1]}"></span>${x.k}</td><td>${x.l2}</td><td class="r">${x.skus}</td><td class="r">${f1(x.y.avail)}</td><td class="r">${f1(x.m.avail)}</td><td class="r">${dl(x.y.avail-x.m.avail)}</td><td class="r">${x[S].oos0p}%</td></tr>`).join('')+`</tbody></table>`;
+let CX={l1:null,l2:null,l3:null};
+const nodeOf=(lv,p)=>D.tree.find(n=>n.lv===lv&&n.p.join('|')===p.join('|'));
+function cxRow(n,lv,on,key){
+  const O=S==='y'?'m':'y',c=CC[n.p[0]],v=n[S].avail;
+  const tip=`<div class='h'>${n.p.join(' › ')}</div><div class='r'>Yesterday<b>${f1(n.y.avail)}%</b></div><div class='r'>MTD<b>${f1(n.m.avail)}%</b></div><div class='r'>Blank all day<b>${n[S].oos0p}%</b></div><div class='r'>SKUs<b>${n.skus}</b></div><div class='r'>Store-SKU lines<b>${IN(n[S].rows)}</b></div>`;
+  return `<div class="cxn ${on?'on':''}" data-lv="${lv}" data-k="${key.replace(/"/g,'&quot;')}" data-tip="${tip}">
+    <span class="nm">${lv===1?`<span class="dot" style="background:${c}"></span>`:''}${n.p[lv-1]}<small>${lv===2&&!CX.l1?n.p[0]+' · ':lv===3&&!CX.l2?n.p[1]+(CX.l1?'':' ('+n.p[0]+')')+' · ':''}${n.skus} SKUs</small></span>
+    <span class="v">${f1(v)}</span><span class="d">${dl(n.y.avail-n.m.avail)}</span>
+    <div class="trk"><i style="width:${v}%;background:${c};opacity:${lv===1?1:.75}"></i><u style="left:calc(${n[O].avail}% - 1px)"></u></div></div>`;
 }
+function renderExplorer(){
+  const by=(a,b)=>a[S].avail-b[S].avail;
+  $('#cxlabel').textContent=(S==='y'?`YESTERDAY · ${D.dshort.toUpperCase()}`:'MTD')+' · WORST FIRST · CLICK TO DRILL DOWN';
+  const L1=D.tree.filter(n=>n.lv===1).sort(by);
+  $('#cx1').innerHTML=L1.map(n=>cxRow(n,1,CX.l1===n.p[0],n.p[0])).join('');
+  const L2=D.tree.filter(n=>n.lv===2&&(!CX.l1||n.p[0]===CX.l1)).sort(by);
+  $('#cx2t').textContent=`L2 · Group${CX.l1?' in '+CX.l1:' (all categories)'}`;
+  $('#cx2').innerHTML=L2.map(n=>cxRow(n,2,CX.l2===n.p.join('|'),n.p.join('|'))).join('')||'<div class="cxempty">No groups.</div>';
+  const L3=D.tree.filter(n=>n.lv===3&&(!CX.l1||n.p[0]===CX.l1)&&(!CX.l2||n.p.slice(0,2).join('|')===CX.l2)).sort(by);
+  $('#cx3t').textContent=`L3 · Sub-category${CX.l2?' in '+CX.l2.split('|')[1]:CX.l1?' in '+CX.l1:''} · ${L3.length}`;
+  $('#cx3').innerHTML=L3.map(n=>cxRow(n,3,CX.l3===n.p.join('|'),n.p.join('|'))).join('')||'<div class="cxempty">No sub-categories.</div>';
+  const path=[CX.l1,CX.l2&&CX.l2.split('|')[1],CX.l3&&CX.l3.split('|')[2]].filter(Boolean);
+  $('#cxpath').innerHTML=path.length?path.map(x=>`<b>${x}</b>`).join(' › '):'All grocery';
+  $('#cxreset').style.display=path.length?'':'none';
+  // SKUs of the selected node
+  const [a1,a2,a3]=[CX.l1,CX.l2&&CX.l2.split('|')[1],CX.l3&&CX.l3.split('|')[2]];
+  const sel=D.skus.filter(s=>(!a1||s.c===a1)&&(!a2||s.l2===a2)&&(!a3||s.dl===a3)&&(S==='y'?s.ys>0:true));
+  const val=s=>S==='y'?s.ya:s.ma, L=[...sel].sort((x,y)=>val(x)-val(y)||(S==='y'?y.yo-x.yo:y.mo-x.mo)).slice(0,20);
+  $('#cxst').textContent=`${path.length?path.join(' › '):'All grocery'} · ${sel.length} SKUs`;
+  $('#cxss').textContent='Weakest SKUs in this selection';
+  $('#cxsku').innerHTML=`<table class="tb"><thead><tr><th>SKU</th><th>L2 › L3</th><th class="r">${S==='y'?'Yday':'MTD'} %</th><th class="r">${S==='y'?'MTD':'Yday'} %</th><th class="r">${S==='y'?'Stores blank':'Store-days blank'}</th><th>Status</th></tr></thead><tbody>`+
+    L.map(s=>{const dead=D.dead.includes(s.n);return `<tr><td><span class="dot" style="background:${CC[s.c]}"></span>${s.n}</td><td>${s.l2} › ${s.dl}</td><td class="r">${f1(val(s))}</td><td class="r">${S==='y'?f1(s.ma):(s.ya==null?'–':f1(s.ya))}</td><td class="r">${S==='y'?`${s.yo} / ${s.ys}`:`${s.mo} / ${s.mr}`}</td><td>${dead?'<span class="pill crit">✕ Dead all month</span>':(S==='y'?s.yo/s.ys:s.mo/s.mr)>=.9?'<span class="pill warn">! Network gap</span>':''}</td></tr>`}).join('')+`</tbody></table>`;
+}
+document.addEventListener('click',e=>{const r=e.target.closest('.cxn');if(!r)return;const lv=+r.dataset.lv,k=r.dataset.k;
+  if(lv===1){CX={l1:CX.l1===k?null:k,l2:null,l3:null}}
+  else if(lv===2){const p=k.split('|');CX={l1:p[0],l2:CX.l2===k?null:k,l3:null}}
+  else{const p=k.split('|');CX={l1:p[0],l2:p[0]+'|'+p[1],l3:CX.l3===k?null:k}}
+  hideTip();renderExplorer()});
+document.addEventListener('click',e=>{if(e.target.id==='cxreset'){CX={l1:null,l2:null,l3:null};renderExplorer()}});
 function heat(){
   const L=[...D.stores].sort((a,b)=>a.m.avail-b.m.avail);
   const col=v=>{const t=Math.max(0,Math.min(1,(v-55)/45));const a=[16,66,129],b=[134,182,239];const c=a.map((x,i)=>Math.round(x+(b[i]-x)*t));return `rgb(${c})`};
@@ -432,7 +555,7 @@ function renderSku(){
   $('#dead').innerHTML=`<table class="tb"><thead><tr><th>SKU</th><th>Category</th><th class="r">Stores listed</th><th class="r">Store-days lost</th></tr></thead><tbody>`+
    dd.map(s=>`<tr><td><span class="dot" style="background:${CC[s.c]}"></span>${s.n}</td><td>${s.c}</td><td class="r">${s.ys}</td><td class="r">${s.mr}</td></tr>`).join('')+`</tbody></table>`;
   $('#gaps').innerHTML=`${ddAll.length>dd.length?`Showing 15 of <b style="color:var(--ink-2)">${ddAll.length}</b> dead SKUs, most widely listed first. `:''}Offline stores (not in this view): ${D.missing_stores.join(', ')}.`;
-  renderL3();
+
 }
 
 /* ---------- load + live refresh ---------- */
