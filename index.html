@@ -205,6 +205,43 @@ body.ready .wrap{opacity:1;transform:none}
 .cxreset:hover{border-color:var(--gold);color:var(--gold-2)}
 .cxempty{font-size:12.5px;color:var(--ink-3);padding:14px 0}
 @media(max-width:1100px){.cx{grid-template-columns:1fr}.cxscroll{max-height:none}}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}@media(max-width:1100px){.g3{grid-template-columns:1fr}}
+
+/* ---- sunburst + scorecard table ---- */
+.gtop{display:grid;grid-template-columns:1.75fr 1fr;gap:14px}
+.gsun{display:grid;grid-template-columns:330px 1fr;gap:26px;align-items:center;background:linear-gradient(155deg,#2b2416 0%,#17150f 62%);border-color:rgba(201,169,110,.32);padding:22px 26px!important}
+.gsun svg path{cursor:pointer;transition:opacity .15s}
+.gsun svg path:hover{opacity:1!important;stroke:#f3e2b8;stroke-width:1.5}
+.gsun .ctr b{font:600 44px/1 var(--serif);fill:var(--gold-2)}
+.gsun .leg{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.gsun .leg div{display:grid;grid-template-columns:14px 1fr 48px 52px;align-items:center;gap:8px;font-size:13px;color:var(--ink);cursor:pointer}
+.gsun .leg i{width:10px;height:10px;border-radius:3px;display:block}
+.gsun .leg b{font:600 18px var(--serif);text-align:right}
+.gsun .leg span.d{font-size:11.5px;text-align:right}
+.gsun .rings{font-size:10.5px;color:var(--ink-3);letter-spacing:.08em;margin-top:14px;line-height:1.6}
+.gscore{margin-top:14px;padding:22px 26px!important}
+.gscore .head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.gscore .tools button{background:none;border:1px solid var(--line);color:var(--ink-2);padding:5px 12px;border-radius:999px;font:11.5px var(--sans);cursor:pointer;margin-left:6px}
+.gscore .tools button:hover{border-color:var(--gold);color:var(--gold-2)}
+table.sct{width:100%;border-collapse:collapse;font-size:13px}
+.sct th{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);font-weight:500;white-space:nowrap}
+.sct td{padding:9px 10px;border-bottom:1px solid var(--line-2);color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sct .r{text-align:right}
+.sct tr.lv0 td{color:var(--ink);font-weight:600;background:rgba(201,169,110,.07)}
+.sct tr.lv0 td:first-child{font:600 15px var(--serif);color:var(--gold-2)}
+.sct tr.lv1 td:first-child{color:var(--ink);font-weight:600}
+.sct tr.lv2 td:first-child{padding-left:34px;color:var(--ink)}
+.sct tr.lv3 td:first-child{padding-left:58px}
+.sct tr.lv3 td{font-size:12.5px}
+.sct .car{display:inline-block;width:16px;color:var(--gold);cursor:pointer;user-select:none}
+.sct .lvt{font-size:9.5px;letter-spacing:.12em;color:var(--ink-3);margin-left:8px}
+.sct .bar{width:150px}
+.sct .bar div{height:6px;background:rgba(240,239,236,.06);border-radius:3px;position:relative}
+.sct .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:0 3px 3px 0}
+.sct .bar u{position:absolute;top:-4px;width:2px;height:14px;background:var(--ink);border-radius:1px}
+.sct tr.clk{cursor:pointer}.sct tr.clk:hover td{background:rgba(201,169,110,.05)}
+@media(max-width:1200px){.gtop{grid-template-columns:1fr}.gsun{grid-template-columns:1fr;justify-items:center}}
+@media(max-width:760px){.sct .bar,.sct .hide-s{display:none}}
 </style>
 </head>
 <body>
@@ -227,7 +264,7 @@ body.ready .wrap{opacity:1;transform:none}
   <div class="seg" id="scope"><button data-s="y" class="on" id="sy">Yesterday</button><button data-s="m" id="sm">MTD</button></div>
 </header>
 
-<section><div class="gband" id="kpis"></div></section>
+<section><div id="kpis"></div></section>
 
 <section>
   <div class="sh"><h2>Key Insights<small>NETWORK · YESTERDAY &amp; MTD</small></h2></div>
@@ -247,7 +284,7 @@ body.ready .wrap{opacity:1;transform:none}
 <section>
   <div class="sh"><h2>Breakup Analysis<small id="bklabel"></small></h2>
     <div class="legend" style="margin:0"><span><i style="background:var(--ink-2);height:8px;width:18px"></i>Selected period</span><span><i style="background:var(--ink);width:2px;height:12px"></i>Other period</span></div></div>
-  <div class="g4" id="breakups"></div>
+  <div class="g3" id="breakups"></div>
 </section>
 
 <section>
@@ -266,7 +303,6 @@ body.ready .wrap{opacity:1;transform:none}
     <div class="filters">
       <div class="tabs" id="view"><button data-v="cards" class="on">Cards</button><button data-v="table">Table</button></div>
       <select id="fCom"><option value="">All COMs</option></select>
-      <select id="fCls"><option value="">All classes</option></select>
       <select id="fSort"><option value="asc">Lowest first</option><option value="desc">Highest first</option><option value="delta">Biggest drop vs MTD</option><option value="gain">Biggest gain vs MTD</option></select>
       <input id="fQ" placeholder="Search store…">
     </div></div>
@@ -356,8 +392,7 @@ function buildInsights(){
   O.push(`<b>A ${Math.round(hi.y.avail-lo.y.avail)}-pt store spread</b>: ${hi.name} ${hi.y.avail}% down to ${lo.name} ${lo.y.avail}%. The <b>${cm[0].k}</b> cluster is lowest on MTD (${cm[0].m.avail}%); <b>${cy[0].k}</b> was lowest yesterday (${cy[0].y.avail}%).`);
   const sd=[...D.stores].sort((a,b)=>b.delta-a.delta),up=sd[0],dn=sd.filter(s=>s.delta<0).slice(-2).reverse();
   O.push(`<b>Biggest swings vs own MTD:</b> ${up.name} <span class="up">${sg(up.delta)}</span> (${up.y.avail}% vs ${up.m.avail}%).${dn.length?` ${dn.map(s=>`${s.name} <span class="dn">${sg(s.delta)}</span>`).join(' and ')} slipped.`:' No store fell below its MTD run-rate.'}`);
-  const cl=Object.entries(D.stores.reduce((a,s)=>(a[s.cls]=(a[s.cls]||0)+1,a),{})).sort().map(([k,v])=>`${k}: ${v}`).join(' · ');
-  O.push(`<b>Scope:</b> online stores only (${D.stores_n}; class ${cl}).${D.missing_stores.length?` ${D.missing_stores.length} listed stores (${D.missing_stores.join(', ')}) are offline and not shown.`:''} ${D.sku_n} SKUs tracked.${D.excluded&&D.excluded.length?` ${D.excluded.length} marketing scheme items (NSO launch offers, e.g. ${D.excluded.slice(0,2).join(', ')}) are excluded as they are not shelf stock.`:''}`);
+  O.push(`<b>Scope:</b> online stores only (${D.stores_n}).${D.missing_stores.length?` ${D.missing_stores.length} listed stores (${D.missing_stores.join(', ')}) are offline and not shown.`:''} ${D.sku_n} SKUs tracked.${D.excluded&&D.excluded.length?` ${D.excluded.length} marketing scheme items (NSO launch offers, e.g. ${D.excluded.slice(0,2).join(', ')}) are excluded as they are not shelf stock.`:''}`);
   $('#ins').innerHTML=O.map(x=>`<li>${x}</li>`).join('');
 }
 
@@ -409,42 +444,47 @@ function renderTrend(){
 
 /* filters */
 function fillFilters(){
-  [['#fCom','com','All COMs'],['#fCls','cls','All classes']].forEach(([id,k,all])=>{const el=$(id),cur=el.value;
+  [['#fCom','com','All COMs']].forEach(([id,k,all])=>{const el=$(id),cur=el.value;
     el.innerHTML=`<option value="">${all}</option>`+[...new Set(D.stores.map(s=>s[k]))].sort().map(c=>`<option>${c}</option>`).join('');
     if([...el.options].some(o=>o.value===cur))el.value=cur});
 }
-['fCom','fCls','fSort','fQ'].forEach(id=>$('#'+id).addEventListener('input',renderStores));
+['fCom','fSort','fQ'].forEach(id=>$('#'+id).addEventListener('input',renderStores));
 document.querySelectorAll('#scope button').forEach(b=>b.onclick=()=>{S=b.dataset.s;document.querySelectorAll('#scope button').forEach(x=>x.classList.toggle('on',x===b));render()});
 document.querySelectorAll('#view button').forEach(b=>b.onclick=()=>{VIEW=b.dataset.v;document.querySelectorAll('#view button').forEach(x=>x.classList.toggle('on',x===b));renderStores()});
 
 function render(){renderTrend();renderKPI();renderExplorer();renderBreak();renderStores();renderSku()}
+let SC_OPEN1=null, SC_OPEN2=new Set();
+function arc(cx,cy,r0,r1,a0,a1){
+  const P=(r,a)=>[cx+r*Math.cos(a),cy+r*Math.sin(a)], big=a1-a0>Math.PI?1:0;
+  const [x0,y0]=P(r1,a0),[x1,y1]=P(r1,a1),[x2,y2]=P(r0,a1),[x3,y3]=P(r0,a0);
+  return `M${x0.toFixed(2)},${y0.toFixed(2)}A${r1},${r1} 0 ${big} 1 ${x1.toFixed(2)},${y1.toFixed(2)}L${x2.toFixed(2)},${y2.toFixed(2)}A${r0},${r0} 0 ${big} 0 ${x3.toFixed(2)},${y3.toFixed(2)}Z`;
+}
 function renderKPI(){
   const k=ov[S],O=S==='y'?'m':'y';
-  /* hero: ring + trend */
-  const R=62,C=2*Math.PI*R,frac=Math.max(0,Math.min(1,k.avail/100)),tk=ov[O].avail/100;
+  if(SC_OPEN1===null) SC_OPEN1=new Set(D.tree.filter(n=>n.lv===1).map(n=>n.p[0]));
+  /* ---- sunburst ---- */
+  const T=D.tree, tot=T.filter(n=>n.lv===1).reduce((s,n)=>s+n[S].rows,0)||1;
+  const op=v=>(0.22+0.78*Math.max(0,Math.min(1,(v-40)/55))).toFixed(2);
+  const rings=[[0,62,92],[1,96,124],[2,128,154]], cx=165, cy=165, G=0.004;
+  let segs='', a=-Math.PI/2;
+  const L1=CATS().map(c=>T.find(n=>n.lv===1&&n.p[0]===c)).filter(Boolean);
+  const tipOf=n=>`<div class='h'>${n.p.join(' › ')}</div><div class='r'>Yesterday<b>${f1(n.y.avail)}%</b></div><div class='r'>MTD<b>${f1(n.m.avail)}%</b></div><div class='r'>Share of lines<b>${(n[S].rows/tot*100).toFixed(1)}%</b></div><div class='r'>SKUs<b>${n.skus}</b></div><div class='r'>Blank all day<b>${n[S].oos0p}%</b></div>`;
+  const seg=(n,lv,a0,a1)=>{const [_,r0,r1]=rings[lv-1];const g=Math.min(G,(a1-a0)/4);
+    return `<path d="${arc(cx,cy,r0,r1,a0+g,a1-g)}" fill="${CC[n.p[0]]}" opacity="${lv===1?1:op(n[S].avail)}" data-lv="${lv}" data-k="${n.p.join('|').replace(/"/g,'&quot;')}" data-tip="${tipOf(n)}"/>`};
+  L1.forEach(n1=>{const s1=n1[S].rows/tot*2*Math.PI; segs+=seg(n1,1,a,a+s1);
+    let a2=a; T.filter(n=>n.lv===2&&n.p[0]===n1.p[0]).sort((x,y)=>y[S].rows-x[S].rows).forEach(n2=>{const s2=n2[S].rows/tot*2*Math.PI; segs+=seg(n2,2,a2,a2+s2);
+      let a3=a2; T.filter(n=>n.lv===3&&n.p[0]===n2.p[0]&&n.p[1]===n2.p[1]).sort((x,y)=>y[S].rows-x[S].rows).forEach(n3=>{const s3=n3[S].rows/tot*2*Math.PI; segs+=seg(n3,3,a3,a3+s3); a3+=s3});
+      a2+=s2}); a+=s1});
   const cmp=S==='y'?`vs MTD ${f1(ov.m.avail)}% &nbsp;${dl(ov.y.avail-ov.m.avail,' pts')}`:(D.recent?`Last 7 days ${D.recent.avail}% vs earlier ${D.earlier.avail}% &nbsp;${dl(D.recent.avail-D.earlier.avail)}`:'');
-  const tv=D.trend.map(t=>t.v),W=230,H=54,mn=Math.min(...tv)-1,mx=Math.max(...tv)+1,x=i=>3+(W-6)*i/Math.max(1,tv.length-1),y=v=>4+(H-14)*(1-(v-mn)/(mx-mn));
-  const sp=tv.map((v,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join('');
-  const hits=tv.map((v,i)=>`<rect x="${x(i)-5}" y="0" width="10" height="${H}" fill="transparent" data-tip="<div class='h'>${D.trend[i].d} ${D.mon}</div><div class='r'>Availability<b>${f1(v)}%</b></div>"/>`).join('');
-  const ang=tk*360-90, tx=75+R*Math.cos(ang*Math.PI/180), ty=75+R*Math.sin(ang*Math.PI/180);
-  const hero=`<div class="card ghero">
-    <div class="ring"><svg viewBox="0 0 150 150" width="150" height="150"><defs><linearGradient id="rg" x1="0" x2="1"><stop offset="0" stop-color="#f3e2b8"/><stop offset="1" stop-color="#a8884f"/></linearGradient></defs>
-      <circle cx="75" cy="75" r="${R}" fill="none" stroke="rgba(240,239,236,.07)" stroke-width="9"/>
-      <circle cx="75" cy="75" r="${R}" fill="none" stroke="url(#rg)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${(C*frac).toFixed(1)} ${C.toFixed(1)}"/>
-      </svg>
-      <svg viewBox="0 0 150 150" width="150" height="150" style="position:absolute;inset:0"><circle cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" r="4" fill="var(--ink)" stroke="#17150f" stroke-width="2" data-tip="<div class='h'>${S==='y'?'MTD':'Yesterday'}</div><div class='r'>Availability<b>${f1(ov[O].avail)}%</b></div>"/></svg>
-      <div class="num"><b>${f1(k.avail)}<span>%</span></b><small>${S==='y'?D.dshort:'MTD'}</small></div></div>
-    <div class="side"><div class="glab">Overall availability</div><div class="cmp">${cmp}</div>
-      <div class="spark"><svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}"><path d="${sp}" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linejoin="round"/><circle cx="${x(tv.length-1)}" cy="${y(tv[tv.length-1])}" r="3.5" fill="var(--gold-2)"/>${hits}</svg>
-      <div class="glab" style="letter-spacing:.14em;margin-top:2px">Daily trend · ${D.trend[0].d}–${D.trend[D.trend.length-1].d} ${D.mon} · dot = ${S==='y'?'MTD':'yesterday'} on ring</div></div></div></div>`;
-  /* category scorecard */
-  const cats=CATS().map(c=>D.cat.find(x=>x.k===c)).filter(Boolean);
-  const sc=`<div class="card gcat"><div class="head"><div class="glab">Category scorecard</div><span>bar = ${S==='y'?'yesterday':'MTD'} · tick = ${S==='y'?'MTD':'yesterday'}</span></div>`+
-    cats.map(c=>`<div class="row" data-tip="<div class='h'>${c.k}</div><div class='r'>Yesterday<b>${c.y.avail}%</b></div><div class='r'>MTD<b>${c.m.avail}%</b></div><div class='r'>Blank all day<b>${c[S].oos0p}%</b></div><div class='r'>Store-SKU lines<b>${IN(c[S].rows)}</b></div>">
-      <span class="nm"><span class="dot" style="background:${CC[c.k]}"></span>${c.k}</span>
-      <div class="trk"><i style="width:${c[S].avail}%;background:${CC[c.k]}"></i><u style="left:calc(${c[O].avail}% - 1px)"></u></div>
-      <span class="val">${f1(c[S].avail)}</span><span class="dlt">${dl(c.y.avail-c.m.avail)}</span></div>`).join('')+`</div>`;
-  /* signals */
+  const sun=`<div class="card gsun">
+    <svg viewBox="0 0 330 330" width="330" height="330">${segs}
+      <circle cx="${cx}" cy="${cy}" r="58" fill="#17150f"/>
+      <text x="${cx}" y="${cy+6}" text-anchor="middle" style="font:600 40px var(--serif);fill:var(--gold-2)">${f1(k.avail)}<tspan style="font-size:17px;fill:var(--ink-2)">%</tspan></text>
+      <text x="${cx}" y="${cy+28}" text-anchor="middle" style="font:500 9.5px var(--sans);letter-spacing:.2em;fill:var(--ink-3)">${S==='y'?D.dshort.toUpperCase():'MTD'}</text></svg>
+    <div><div class="glab">Overall availability</div><div class="cmp" style="margin-top:8px;font-size:13px;color:var(--ink-2)">${cmp}</div>
+      <div class="leg">${L1.map(n=>`<div data-k="${n.p[0]}" class="legrow"><i style="background:${CC[n.p[0]]}"></i><span>${n.p[0]}</span><b>${f1(n[S].avail)}</b><span class="d">${dl(n.y.avail-n.m.avail)}</span></div>`).join('')}</div>
+      <div class="rings">INNER RING L1 · MIDDLE L2 · OUTER L3<br>SLICE = SHARE OF STORE-SKU LINES · PALER = LOWER AVAILABILITY<br>CLICK A SLICE TO OPEN IT IN THE CATEGORY EXPLORER</div></div></div>`;
+  /* ---- signals ---- */
   const dark=D.skus.filter(s=>!D.dead.includes(s.n)&&(S==='y'?s.ys>=5&&s.yo/s.ys>=.9:s.mr>=50&&s.mo/s.mr>=.9)).sort((a,b)=>S==='y'?b.ys-a.ys:b.mr-a.mr);
   const so=[...D.stores].sort((a,b)=>b[S].avail-a[S].avail),hi=so[0],lo=so[so.length-1];
   const sig=`<div class="card gsig">
@@ -454,12 +494,41 @@ function renderKPI(){
       <div class="cap">0% every day since ${D.trend[0].d} ${D.mon}. Fixing them lifts MTD to <b>${D.exdead_m}%</b>.</div></div>
     <div class="it"><div class="top"><div class="glab">Store spread</div><div class="big">${f1(hi[S].avail-lo[S].avail)}<span>pts</span></div></div>
       <div class="cap"><b>${hi.name}</b> ${f1(hi[S].avail)}% → <b>${lo.name}</b> ${f1(lo[S].avail)}%</div></div></div>`;
-  $('#kpis').innerHTML=hero+sc+sig;
+  /* ---- scorecard table ---- */
+  const row=(n,lv,label,extra)=>{const c=lv===0?'var(--gold-2)':CC[n.p?n.p[0]:''];const v=n[S].avail;
+    return `<tr class="lv${lv} ${extra||''}"${n.p?` data-k="${n.p.join('|').replace(/"/g,'&quot;')}" data-lv="${lv}"`:''}><td>${label}</td>
+      <td class="r hide-s">${IN(n.skus)}</td><td class="r">${f1(n.y.avail)}</td><td class="r">${f1(n.m.avail)}</td><td class="r">${dl(n.y.avail-n.m.avail)}</td>
+      <td class="r hide-s">${n[S].oos0p}%</td><td class="r hide-s">${n[S].full}%</td>
+      <td class="bar"><div><i style="width:${v}%;background:${c}"></i><u style="left:calc(${n[O].avail}% - 1px)"></u></div></td></tr>`};
+  const overall={y:ov.y,m:ov.m,skus:D.sku_n};
+  let rows=row(overall,0,'Overall');
+  L1.forEach(n1=>{const o1=SC_OPEN1.has(n1.p[0]);
+    rows+=row(n1,1,`<span class="car" data-t1="${n1.p[0]}">${o1?'▾':'▸'}</span><span class="dot" style="background:${CC[n1.p[0]]}"></span>${n1.p[0]}<span class="lvt">L1</span>`);
+    if(!o1) return;
+    T.filter(n=>n.lv===2&&n.p[0]===n1.p[0]).sort((a,b)=>a[S].avail-b[S].avail).forEach(n2=>{const key=n2.p.join('|'),o2=SC_OPEN2.has(key);
+      rows+=row(n2,2,`<span class="car" data-t2="${key.replace(/"/g,'&quot;')}">${o2?'▾':'▸'}</span>${n2.p[1]}<span class="lvt">L2</span>`);
+      if(!o2) return;
+      T.filter(n=>n.lv===3&&n.p[0]===n2.p[0]&&n.p[1]===n2.p[1]).sort((a,b)=>a[S].avail-b[S].avail).forEach(n3=>{rows+=row(n3,3,`${n3.p[2]}<span class="lvt">L3</span>`,'clk')})})});
+  const score=`<div class="card gscore"><div class="head"><div><div class="glab">Category scorecard</div><div style="font:600 19px var(--serif);margin-top:4px">Overall › L1 › L2 › L3</div></div>
+    <div class="tools"><span style="font-size:11px;color:var(--ink-3)">bar = ${S==='y'?'yesterday':'MTD'} · tick = ${S==='y'?'MTD':'yesterday'} · worst first</span><button id="scExp">Expand all</button><button id="scCol">Collapse</button></div></div>
+    <div style="overflow-x:auto"><table class="sct"><thead><tr><th>Level</th><th class="r hide-s">SKUs</th><th class="r">Yday %</th><th class="r">MTD %</th><th class="r">Δ</th><th class="r hide-s">Blank all day</th><th class="r hide-s">Full-day</th><th></th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+  $('#kpis').innerHTML=`<div class="gtop">${sun}${sig}</div>${score}`;
 }
+function cxGo(k){const p=k.split('|');CX={l1:p[0],l2:p.length>1?p[0]+'|'+p[1]:null,l3:p.length>2?k:null};hideTip();renderExplorer();
+  document.getElementById('cx1').closest('section').scrollIntoView({behavior:'smooth',block:'start'});}
+document.addEventListener('click',e=>{
+  const t1=e.target.closest('[data-t1]'),t2=e.target.closest('[data-t2]');
+  if(t1){const k=t1.dataset.t1;SC_OPEN1.has(k)?SC_OPEN1.delete(k):SC_OPEN1.add(k);renderKPI();return}
+  if(t2){const k=t2.dataset.t2;SC_OPEN2.has(k)?SC_OPEN2.delete(k):SC_OPEN2.add(k);renderKPI();return}
+  if(e.target.id==='scExp'){D.tree.filter(n=>n.lv===1).forEach(n=>SC_OPEN1.add(n.p[0]));D.tree.filter(n=>n.lv===2).forEach(n=>SC_OPEN2.add(n.p.join('|')));renderKPI();return}
+  if(e.target.id==='scCol'){SC_OPEN1.clear();SC_OPEN2.clear();renderKPI();return}
+  const sl=e.target.closest('.gsun path[data-k], .gsun .legrow, .sct tr.clk');
+  if(sl) cxGo(sl.dataset.k);
+});
 function renderBreak(){
   $('#bklabel').textContent=S==='y'?'BAR = YESTERDAY · TICK = MTD':'BAR = MTD · TICK = YESTERDAY';
   const O=S==='y'?'m':'y';
-  const blocks=[['Category','By category',D.cat,true],['Group (L2)','By L2 group',D.dlv,false],['Store class','By store class',D.cls,false],['COM cluster','By cluster manager',D.com,false]];
+  const blocks=[['Category','By category',D.cat,true],['Group (L2)','By L2 group',D.dlv,false],['COM cluster','By cluster manager',D.com,false]];
   const mins=blocks.flatMap(b=>b[2].flatMap(x=>[x.y.avail,x.m.avail])),lo=Math.max(0,Math.min(50,Math.floor((Math.min(...mins)-5)/10)*10)),hi=100,pc=v=>Math.max(0,(v-lo)/(hi-lo)*100);
   $('#breakups').innerHTML=blocks.map(([t,s,rows,col])=>{
     const r=[...rows].sort((a,b)=>a[S].avail-b[S].avail);
@@ -479,23 +548,23 @@ function spark(s){
 }
 let tSort={k:'avail',d:1};
 function renderStores(){
-  const com=$('#fCom').value,cls=$('#fCls').value,q=$('#fQ').value.toLowerCase(),so=$('#fSort').value;
+  const com=$('#fCom').value,cls='',q=$('#fQ').value.toLowerCase(),so=$('#fSort').value;
   $('#stlabel').textContent=(S==='y'?'RANKED ON YESTERDAY':'RANKED ON MTD')+' · INSIGHTS FROM YESTERDAY';
   let L=D.stores.filter(s=>(!com||s.com===com)&&(!cls||s.cls===cls)&&(!q||s.name.toLowerCase().includes(q)));
   const sk={asc:(a,b)=>a[S].avail-b[S].avail,desc:(a,b)=>b[S].avail-a[S].avail,delta:(a,b)=>a.delta-b.delta,gain:(a,b)=>b.delta-a.delta}[so];
   L.sort(sk);
   if(VIEW==='cards'){
     $('#stores').innerHTML=`<div class="sc">`+L.map(s=>{const v=s[S].avail,o=S==='y'?s.m.avail:s.y.avail,[c,lab,ic]=st(v);const rk=S==='y'?s.ry:s.rm;const CS=S==='y'?s.caty:s.catm;
-      return `<div class="card st"><div class="top"><div><div class="rk">#${rk} of ${D.stores_n}</div><h3>${s.name}</h3><div class="meta" title="SKUs tracked yesterday">Class ${s.cls} · ${s.y.rows} · ${s.com}</div></div><span class="pill ${c}">${ic} ${lab}</span></div>
+      return `<div class="card st"><div class="top"><div><div class="rk">#${rk} of ${D.stores_n}</div><h3>${s.name}</h3><div class="meta" title="SKUs tracked yesterday">${s.y.rows} SKUs · ${s.com}</div></div><span class="pill ${c}">${ic} ${lab}</span></div>
       <div class="mid"><div><div class="big">${f1(v)}<span>%</span></div><div class="cmp">${S==='y'?'MTD':'Yday'} ${f1(o)}% · Δ ${dl(s.delta)}</div></div><div style="text-align:right">${spark(s)}<div class="tag">${s.tag}</div></div></div>
       <div class="cats">${CATS().map(k=>`<div>${k}<b>${CS[k]==null?'–':f1(CS[k])+'%'}</b><div class="bar"><i style="width:${CS[k]}%;background:${CC[k]}"></i></div></div>`).join('')}</div>
       <ul>${s.ins.map(t=>`<li>${t}</li>`).join('')}</ul></div>`}).join('')+`</div>`;
   } else {
-    const cols=[['name','Store'],['cls','Class'],['com','COM'],['y','Yday %','r'],['m','MTD %','r'],['delta','Δ','r'],['last7','Last 7d %','r'],...CATS().map(k=>['c_'+k,k+' %','r']),['oos','Blank SKUs (Yday)','r']];
+    const cols=[['name','Store'],['com','COM'],['y','Yday %','r'],['m','MTD %','r'],['delta','Δ','r'],['last7','Last 7d %','r'],...CATS().map(k=>['c_'+k,k+' %','r']),['oos','Blank SKUs (Yday)','r']];
     const CT=S==='y'?'caty':'catm';const val=(s,k)=>({y:s.y.avail,m:s.m.avail,oos:s.y.oos0}[k]??(k.startsWith('c_')?(s[CT][k.slice(2)]??-1):s[k]));
     L.sort((a,b)=>{const x=val(a,tSort.k==='avail'?S:tSort.k),y=val(b,tSort.k==='avail'?S:tSort.k);return (x>y?1:x<y?-1:0)*tSort.d});
     $('#stores').innerHTML=`<div class="card" style="overflow-x:auto"><table class="tb"><thead><tr>${cols.map(c=>`<th class="${c[2]||''}" data-k="${c[0]}">${c[1]}</th>`).join('')}</tr></thead><tbody>`+
-      L.map(s=>{const [c,lab,ic]=st(s[S].avail);return `<tr><td><span class="pill ${c}" style="margin-right:8px">${ic}</span>${s.name}</td><td>${s.cls}</td><td>${s.com}</td><td class="r">${f1(s.y.avail)}</td><td class="r">${f1(s.m.avail)}</td><td class="r">${dl(s.delta)}</td><td class="r">${f1(s.last7)}</td>${CATS().map(k=>`<td class="r">${s[CT][k]==null?'–':f1(s[CT][k])}</td>`).join('')}<td class="r">${s.y.oos0}</td></tr>`}).join('')+`</tbody></table></div>`;
+      L.map(s=>{const [c,lab,ic]=st(s[S].avail);return `<tr><td><span class="pill ${c}" style="margin-right:8px">${ic}</span>${s.name}</td><td>${s.com}</td><td class="r">${f1(s.y.avail)}</td><td class="r">${f1(s.m.avail)}</td><td class="r">${dl(s.delta)}</td><td class="r">${f1(s.last7)}</td>${CATS().map(k=>`<td class="r">${s[CT][k]==null?'–':f1(s[CT][k])}</td>`).join('')}<td class="r">${s.y.oos0}</td></tr>`}).join('')+`</tbody></table></div>`;
     document.querySelectorAll('.tb th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;tSort={k,d:tSort.k===k?-tSort.d:1};renderStores()});
   }
 }
