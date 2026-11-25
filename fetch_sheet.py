@@ -19,7 +19,8 @@ url = open(cfg).read().strip().split()[0]
 
 req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
 raw = urllib.request.urlopen(req, timeout=60).read().decode('utf-8-sig')
-df = pd.read_csv(io.StringIO(raw))
+# index_col=False: if data rows carry an extra value the header doesn't name, drop it instead of shifting columns
+df = pd.read_csv(io.StringIO(raw), index_col=False, low_memory=False)
 df.columns = [str(c).strip() for c in df.columns]
 df.columns = [c if c.lower() not in ('outlet_id','dt','ksin') else c.lower() for c in df.columns]
 need = ['outlet_id', 'dt', 'ksin', 'total_sku_hours', 'total_store_hrs']
@@ -29,6 +30,9 @@ if any(c not in df.columns for c in need) or df.empty:
 df = df[df['outlet_id'].astype(str).str.strip() != '']
 df['dt'] = pd.to_datetime(df['dt'], errors='coerce', format='mixed').dt.strftime('%Y-%m-%d')
 df = df.dropna(subset=['dt'])
+df = df[df['dt'] >= '2020-01-01']          # guard against shifted / junk rows
+if df.empty:
+    print('No valid dated rows in the published sheet'); flag('false'); sys.exit(0)
 os.makedirs(os.path.join(HERE, 'data', 'daily'), exist_ok=True)
 
 # The sheet may hold one day or several (e.g. last 3 days). Save every day we don't have yet,

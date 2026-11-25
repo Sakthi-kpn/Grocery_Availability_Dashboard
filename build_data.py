@@ -194,5 +194,31 @@ for z in st:
     z.pop('chronic')
 D['stores'] = st
 
+# ---- extras used by the luxury dashboard (dashboard_luxury.html) ----
+D['days'] = [pd.Timestamp(d).strftime('%d %b') for d in days]
+def _tr(col):
+    a = m.groupby([col, 'dt'])[['total_sku_hours', 'total_store_hrs']].sum()
+    a = (a.total_sku_hours / a.total_store_hrs * 100).round(1).unstack('dt').reindex(columns=days)
+    return {str(k): [None if pd.isna(v) else float(v) for v in row] for k, row in a.iterrows()}
+def _mat(a_, b_, d):
+    x = d.groupby([a_, b_])[['total_sku_hours', 'total_store_hrs']].sum()
+    x = (x.total_sku_hours / x.total_store_hrs * 100).round(1)
+    o = {}
+    for (i, j), v in x.items(): o.setdefault(str(i), {})[str(j)] = float(v)
+    return o
+D['trend_com'] = _tr('COM'); D['trend_cls'] = _tr('cls'); D['trend_l2'] = _tr('l2_name'); D['trend_l1'] = _tr('l1_name')
+D['com_cat_y'] = _mat('COM', 'l1_name', yd); D['com_cat_m'] = _mat('COM', 'l1_name', m)
+D['cls_cat_y'] = _mat('cls', 'l1_name', yd); D['cls_cat_m'] = _mat('cls', 'l1_name', m)
+D['com_l2_y'] = _mat('COM', 'l2_name', yd); D['com_l2_m'] = _mat('COM', 'l2_name', m)
+D['hour_com_y'] = {c: hr(g) for c, g in yd.groupby('COM')}; D['hour_com_m'] = {c: hr(g) for c, g in m.groupby('COM')}
+D['hour_l2_y'] = {c: hr(g) for c, g in yd.groupby('l2_name')}; D['hour_l2_m'] = {c: hr(g) for c, g in m.groupby('l2_name')}
+D['l2_parent'] = m.groupby('l2_name').l1_name.first().to_dict()
+for z in st:
+    g = m[m.outlet_id == z['id']]
+    dd = (g.groupby('dt')[['total_sku_hours', 'total_store_hrs']].sum())
+    dd = (dd.total_sku_hours / dd.total_store_hrs * 100).round(1).reindex(days)
+    z['daily_full'] = [None if pd.isna(v) else float(v) for v in dd.values]
+    z['hour_m'] = hr(g)
+
 json.dump(D, open(out, 'w'), default=str, separators=(',', ':'))
 print('Wrote', out, '| date', D['date'], '| stores', D['stores_n'], '| availability', D['ov']['y']['avail'], '/', D['ov']['m']['avail'])
